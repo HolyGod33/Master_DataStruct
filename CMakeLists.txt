@@ -3,4 +3,4 @@ project(Master_DataStruct)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Master_DataStruct SeqList.cpp)
+add_executable(Master_DataStruct SeqList.cpp DList.cpp)
