@@ -2,6 +2,15 @@
 // Created by cxy on 2020/9/17.
 //
 
+void HeadAdjust(int pInt[], int i, int len);
+
+void swap(int a, int b){
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+
 //从后往前两两比较,若为逆序则交换他们  冒泡排序
 void BubbleSort(int A[], int n){
     for (int i = 0; i < n - 1; ++i) {
@@ -23,6 +32,7 @@ void BubbleSort(int A[], int n){
 //希尔排序 先将排序表分割成若干个特殊子表
 //对各个字表分别进行插入排序
 //缩小增量d,直到d = 1为止
+//增量排序 = 希尔排序
 void shellSort(int A[], int n){
     int d, i, j;
     //A[0]只是暂存
@@ -38,3 +48,74 @@ void shellSort(int A[], int n){
         }
     }
 }
+
+//快速排序
+//1.选择基准,一般是选取表头元素
+//2.将表中大于基准元素的放在右边,小于的放在左边
+//3.递归的对左右子表进行重复过程
+void QuickSort(int A[],int left, int right){
+    int low = left;
+    int temp;
+    int high = right;
+    if (low < high){//递归退出条件
+        while(low != high){
+            temp = A[low];
+
+            while (low < high && A[high] >= temp){
+                high --;
+            }
+            if (low<high){
+                A[low] = A[high];
+            }
+
+            while (low < high && A[low] <= temp){
+                low ++;
+            }
+            if (low<high){
+                A[high] = A[low];
+            }
+
+        }
+        A[high] = temp;
+        QuickSort(A, left, high-1);
+        QuickSort(A, high+1, right);
+    }
+}
+
+//选择排序之选择排序
+void SelectSort(int A[], int n){
+    int min;
+    for (int i = 0; i < n - 1; ++i) {
+        min = i;
+        for (int j = i; j < n - 1; ++j) {
+            if (A[j] < A[min])
+                min = j;
+        }
+        if (min != i){
+            swap(A[min], A[i]);
+        }
+    }
+}
+
+void BuildMxHeap(int A[], int len){
+    for (int i = len/2; i > 0; --i) {
+        HeadAdjust(A,i, len);
+    }
+}
+
+//队排序之大根堆的建立
+void HeadAdjust(int A[], int k, int len) {
+    A[0] = A[k];
+    for (int i = 2*k;  i < len-1 ; i*=2) {
+        if (i < len && A[i] < A[i+1]){
+            i++;//找子节点中大的一个
+        }
+        if(A[0] >= A[i]) break; //注意这里对比的是A[0] 意义为如果最开始的A[0]放在k这个位置,是否满足大根堆
+        else{
+            A[k] = A[i];
+            k = i;//修改k值,因为在这层替换中有可能导致下面的子树不满足大根堆的要求,所以需要将k转到该次替换的节点进行检查,是否符合大根堆
+        }
+    }
+    A[k] = A[0];//元素的下坠
+}
+
