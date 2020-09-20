@@ -103,6 +103,16 @@ void BuildMxHeap(int A[], int len){
     }
 }
 
+//堆排序
+//使用堆的特性,选出最大的元素之后,与队尾的元素交换,交换后不满足条件堆的条件,便再进行一次堆的调整,如此循环后选出由小到大的有序数组
+void HeapSort(int A[], int len){
+    BuildMxHeap(A, len);
+    for (int i = len ; i > 1; --i) {
+        swap(A[1], A[i-1]);
+        BuildMxHeap(A, i);
+    }
+}
+
 //队排序之大根堆的建立
 void HeadAdjust(int A[], int k, int len) {
     A[0] = A[k];
@@ -112,8 +122,8 @@ void HeadAdjust(int A[], int k, int len) {
         }
         if(A[0] >= A[i]) break; //注意这里对比的是A[0] 意义为如果最开始的A[0]放在k这个位置,是否满足大根堆
         else{
-            A[k] = A[i];
-            k = i;//修改k值,因为在这层替换中有可能导致下面的子树不满足大根堆的要求,所以需要将k转到该次替换的节点进行检查,是否符合大根堆
+            A[k] = A[i];//不满足则让孩子节点中大的放在k这个位置
+            k = i;//修改k值,因为在这层替换中有可能导致下面的子树不满足大根堆的要求,所以需要将k转到该次替换的节点(子树)进行检查,是否符合大根堆
         }
     }
     A[k] = A[0];//元素的下坠
