@@ -42,6 +42,14 @@ bool Pop(Stacklist &sq,BiTNode &x){
     return true;
 }
 
+bool GetTop(Stacklist &sq, BiTNode &p){
+    if (sq.top != -1){
+        p = sq.data[sq.top];
+        return true;
+    }
+    return false;
+}
+
 //先序遍历
 void PreOrder(BiTree T){
     if (T != NULL){
@@ -76,7 +84,7 @@ void PreOrder2(BiTree T){
     BiTree p = T;
     while (p || sq.top != -1){//当p为空或者栈为空时退出遍历
         if (p){
-            visit(T);
+            visit(T);//如果是中序遍历则吧这个visit放在else里面
             Push(sq,*p);
             p = p->lChild;
         }else{
@@ -88,8 +96,32 @@ void PreOrder2(BiTree T){
 }
 
 //后序遍历的非递归形式
-
+//沿着根的左孩子,依次入栈(不是访问),直到左孩子为空,然后读取栈顶元素(不是出栈) 如果栈顶的右孩子存在且没有被访问过,则转向右孩子执行:一直访问左孩子
+//若右孩子为空,则栈顶元素出栈并访问栈顶元素
 void PostOrder2(BiTree T){
+    Stacklist  sq;
+    initStack(sq);
+    BiTree p = T;
+    BiTNode *r = nullptr; //指向最近访问过的节点
+    while (p || sq.top != -1){
+        if (p){
+            Push(sq, *p);
+            p = p->rChild;
+        }
+        else{
+            GetTop(sq,*p);
+            if (p->rChild && p->rChild != r){//如果栈顶元素的右孩子存在且未被访问过
+                p = p->rChild;//就让栈顶元素的右孩子压栈
+                Push(sq, *p);
+                p = p->lChild;//并访问右孩子的左孩子(执行上一个的if)
+            } else{
+                Pop(sq,*p);
+                visit(p);
+                r = p;
+                p = nullptr;//防止再次访问p的子树
+            }
+        }
+    }
 
 }
 
