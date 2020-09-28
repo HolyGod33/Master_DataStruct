@@ -108,7 +108,7 @@ void BuildMxHeap(int A[], int len){
 void HeapSort(int A[], int len){
     BuildMxHeap(A, len);
     for (int i = len ; i > 1; --i) {
-        swap(A[1], A[i-1]);
+        swap(A[1], A[i-1]);//交换,将顶部满足要求的元素放在最后
         BuildMxHeap(A, i);
     }
 }

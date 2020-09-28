@@ -6,6 +6,7 @@
 #define N 10
 
 int *B = new int[N];
+
 void Merge(int A[], int low, int mid, int high){
     int i, j ,k;
     for (k = low; k < high; ++k) {
@@ -24,5 +25,14 @@ void Merge(int A[], int low, int mid, int high){
     }
     while (j <= high){
         A[k++] = B[j++];
+    }
+}
+
+void MergeSort(int A[], int low, int high){
+    if (low < high){
+        int mid = (low + high) / 2;
+        MergeSort(A, low, mid);
+        MergeSort(A, mid+1, high);
+        Merge(A, low, mid, high);
     }
 }
